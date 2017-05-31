@@ -13,15 +13,13 @@ from kombu import Connection
 eventlet.monkey_patch()
 
 
-def send_many(n):
+def wait_many(timeout=1):
 
     #: Create connection
     #: If hostname, userid, password and virtual_host is not specified
     #: the values below are the default, but listed here so it can
     #: be easily changed.
-    with Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
-                    '127.0.0.1:30002,127.0.0.1:30003,127.0.0.1:30004,'
-                    '127.0.0.1:30005,127.0.0.1:30006') as connection:
+    with Connection('redis://') as connection:
 
         #: SimpleQueue mimics the interface of the Python Queue module.
         #: First argument can either be a queue name or a kombu.Queue object.
@@ -29,14 +27,13 @@ def send_many(n):
         #: queue name, exchange name and routing key.
         with connection.SimpleQueue('kombu_demo') as queue:
 
-            def send_message(i):
-                queue.put({'hello': 'world%s' % (i, )})
+            while True:
+                try:
+                    message = queue.get(block=False, timeout=timeout)
+                except queue.Empty:
+                    break
+                else:
+                    message.ack()
+                    print(message.payload)
 
-            pool = eventlet.GreenPool(10)
-            for i in range(n):
-                pool.spawn(send_message, i)
-            pool.waitall()
-
-
-if __name__ == '__main__':
-    send_many(10)
+eventlet.spawn(wait_many).wait()

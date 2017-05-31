@@ -22,9 +22,7 @@ def on_message(message):
 
 
 if __name__ == '__main__':
-    conn = Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
-                      '127.0.0.1:30002,127.0.0.1:30003,127.0.0.1:30004,'
-                      '127.0.0.1:30005,127.0.0.1:30006')
+    conn = Connection('redis://')
     conn.register_with_event_loop(hub)
 
     with Consumer(conn, [queue], on_message=on_message):

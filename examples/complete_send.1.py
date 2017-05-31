@@ -13,9 +13,7 @@ exchange = Exchange('kombu_demo', type='direct')
 queue = Queue('kombu_demo', exchange, routing_key='kombu_demo')
 
 
-with Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
-                '127.0.0.1:30002,127.0.0.1:30003,127.0.0.1:30004,'
-                '127.0.0.1:30005,127.0.0.1:30006') as connection:
+with Connection('redis://') as connection:
 
     #: Producers are used to publish messages.
     #: a default exchange and routing key can also be specifed

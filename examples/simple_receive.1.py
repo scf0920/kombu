@@ -4,13 +4,13 @@ Example receiving a message using the SimpleQueue interface.
 
 from kombu import Connection
 
+import traceback
+
 #: Create connection
 #: If hostname, userid, password and virtual_host is not specified
 #: the values below are the default, but listed here so it can
 #: be easily changed.
-with Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
-                '127.0.0.1:30002,127.0.0.1:30003,127.0.0.1:30004,'
-                '127.0.0.1:30005,127.0.0.1:30006') as conn:
+with Connection('redis://127.0.0.1:6379/0') as conn:
 
     #: SimpleQueue mimics the interface of the Python Queue module.
     #: First argument can either be a queue name or a kombu.Queue object.
@@ -20,6 +20,7 @@ with Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
         message = queue.get(block=True, timeout=10)
         message.ack()
         print(message.payload)
+        print traceback.print_stack()
 
 ####
 #: If you don't use the with statement then you must aways

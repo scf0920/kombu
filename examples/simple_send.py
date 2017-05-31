@@ -12,7 +12,9 @@ from kombu import Connection
 #: If hostname, userid, password and virtual_host is not specified
 #: the values below are the default, but listed here so it can
 #: be easily changed.
-with Connection('amqp://guest:guest@localhost:5672//') as conn:
+with Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
+                '127.0.0.1:30002,127.0.0.1:30003,127.0.0.1:30004,'
+                '127.0.0.1:30005,127.0.0.1:30006') as conn:
 
     #: SimpleQueue mimics the interface of the Python Queue module.
     #: First argument can either be a queue name or a kombu.Queue object.

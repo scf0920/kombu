@@ -34,7 +34,9 @@ if __name__ == '__main__':
     # setup root logger
     setup_logging(loglevel='INFO', loggers=[''])
 
-    with Connection('amqp://guest:guest@localhost:5672//') as conn:
+    with Connection('redis-cluster://127.0.0.1:30001/0?alts=127.0.0.1:30001,'
+                    '127.0.0.1:30002,127.0.0.1:30003,127.0.0.1:30004,'
+                    '127.0.0.1:30005,127.0.0.1:30006') as conn:
         try:
             worker = Worker(conn)
             worker.run()
