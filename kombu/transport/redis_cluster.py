@@ -943,6 +943,7 @@ class Channel(virtual.Channel):
             'socket_connect_timeout': self.socket_connect_timeout,
             'socket_keepalive': self.socket_keepalive,
             'socket_keepalive_options': self.socket_keepalive_options,
+            'skip_full_coverage_check': True
         }
 
         if redis.VERSION < (2, 10):
